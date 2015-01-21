@@ -22,14 +22,14 @@
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
 
-        <div id="wrapper">
+        <div id="wrapper"> 
             <header>
                 <section id="top-area">
                     <p>Phone orders: 1-800-0000 | Email us: <a href="mailto:office@shop.com">office@shop.com</a></p>
                 </section><!-- end top-area -->
                 <section id="action-bar">
                     <div id="logo">
-                        <a href="#"><span id="logo-accent">e</span>Commerce</a>
+                        <a href="/"><span id="logo-accent">e</span>Commerce</a>
                     </div><!-- end logo -->
 
                     <nav class="dropdown">
@@ -37,10 +37,9 @@
                             <li>
                                 <a href="#">Shop by Category {{ HTML::image('/img/down-arrow.gif') }}</a>
                                 <ul>
-                                    <li><a href="#">Laptops</a></li>
-                                    <li><a href="#">Desktop PC</a></li>
-                                    <li><a href="#">Smartphones</a></li>
-                                    <li><a href="#">Tablets</a></li>
+                                    @foreach ($catnav as $cat)
+                                        <li><a href="/store/category/{{{ $cat->id }}}">{{{ $cat->name }}}</a></li>
+                                    @endforeach
                                 </ul>
                             </li>
                         </ul>
@@ -87,6 +86,8 @@
                 </section><!-- end action-bar -->
             </header>
 
+            @yield('promo')
+
             <hr />
 
             <section id="main-content" class="clearfix">
@@ -94,12 +95,20 @@
                 @if (Session::has('message'))
                     <p class="alert">{{ Session::get('message')}}</p>
                 @endif
+
+
+
+                @if ( $errors->has() )
+                    <p class="alert">{{ var_dump($errors) }}</p>
+                @endif
                 
                 @yield('content')
 
             </section><!-- end main-content -->
 
             <hr />
+
+            @yield('pagination')
 
             <footer>
                 <section id="contact">

@@ -3,6 +3,9 @@
 class CategoriesController extends BaseController {
 	
 	public function __construct(){
+
+		parent::__construct();
+
 		$this->beforeFilter('crsf', ['on' => 'post']);
 	}
 
@@ -11,7 +14,7 @@ class CategoriesController extends BaseController {
 	}
 
 	public function postCreate(){
-		$validator = Validator::make(Input::all(), ['name' => 'required|min:3']);
+		$validator = Validator::make(Input::all(), Category::$rules);
 
 		if ($validator->passes()){
 			$category = new Category;
@@ -32,14 +35,23 @@ class CategoriesController extends BaseController {
 
 		$category = Category::find(Input::get('id'));
 
-		if (empty($category)){
+		if ( empty($category) ){
 
-			return Redirect::to('admin/categories/index')->with('message', 'Something went wrong');
+			return Redirect::to('admin/categories/index')->with('message', 'Something went wrong: Category has not been found');
 
 		} else {
 			
-			$category->delete();
-			return Redirect::to('admin/categories/index')->with('message', 'Category Deleted');	
+			$products_in_category = Product::where('category_id', '=', $category->id)->count();
+
+			if ( $products_in_category > 0 ){
+
+				return Redirect::to('admin/categories/index')->with('message', 'Something went wrong: There are some products that depends on this category');
+			} else {
+
+				$category->delete();
+				return Redirect::to('admin/categories/index')->with('message', 'Category Deleted');	
+
+			}
 
 		}
 

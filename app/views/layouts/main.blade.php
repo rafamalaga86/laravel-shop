@@ -46,47 +46,72 @@
                     </nav>
 
                     <div id="search-form">
-                        <form action="#" method="get">
-                            <input type="search" name="search" placeholder="Search by keyword" class="search">
-                            <input type="submit" value="Search" class="search submit">
-                        </form>
+						{{ Form::open(['url' => '/store/search', 'method' => 'get']) }}
+						{{ Form::text('keyword', null, ['placeholder' => 'Search', 'class' => 'search']) }}
+						{{ Form::submit('Search', ['class' => 'search submit']) }}
+                        {{ Form::close() }}
                     </div><!-- end search-form -->
 
                     <div id="user-menu">
-                        
-                        <nav id="signin" class="dropdown">
+
+                     @if (Auth::check())
+
+                        <nav class="dropdown">
                             <ul>
                                 <li>
-                                    <a href="#">{{ HTML::image('/img/user-icon.gif', 'Sign In') }}{{ HTML::image('/img/down-arrow.gif', 'Sign In') }}
+                                    <a href="#">
+                                        <img src="/img/user-icon.gif" alt="{{{ Auth::user()->firstname }}}" /> 
+                                        {{{ Auth::user()->firstname }}}
+                                        <img src="/img/down-arrow.gif" alt="{{{ Auth::user()->firstname }}}" />
+                                    </a>
                                     <ul>
-                                        <li><a href="#">Sign In</a></li>
-                                        <li><a href="#">Sign Up</a></li>
+
+                                        @if ( Auth::user()->admin == 1)
+                                        
+                                            <li><a href="/admin/categories/">Manage Categories</a></li>
+
+                                            <li><a href="/admin/products/">Manage Products</a></li>
+
+                                        @endif
+
+                                        <li><a href="/users/signout">Log Out</a></li>
                                     </ul>
                                 </li>
                             </ul>
                         </nav>
 
-                        <!--
-                        <nav class="dropdown">
+                     @else
+                        
+                        <nav id="signin" class="dropdown">
                             <ul>
                                 <li>
-                                    <a href="#"><img src="/img/user-icon.gif" alt="Andrew Perkins" /> Andrew Perkins <img src="img/down-arrow.gif" alt="Andrew Perkins" /></a>
+                                    <a href="#">
+                                    {{ HTML::image('/img/user-icon.gif', 'Sign In') }}
+                                    Log in
+                                    {{ HTML::image('/img/down-arrow.gif', 'Sign In') }}
+                                    </a>
                                     <ul>
-                                        <li><a href="#">Order History</a></li>
-                                        <li><a href="#">Sign Out</a></li>
+                                        <li><a href="/users/signin">Log in</a></li>
+                                        <li><a href="/users/signup">Register</a></li>
                                     </ul>
                                 </li>
                             </ul>
-                        </nav>-->
+                        </nav>
+
+
+                     @endif
+
                     </div><!-- end user-menu -->
 
                     <div id="view-cart">
-                        <a href="#"><img src="/img/blue-cart.gif" alt="View Cart"> View Cart</a>
+                        <a href="/store/cart"><img src="/img/blue-cart.gif" alt="View Cart"> View Cart</a>
                     </div><!-- end view-cart -->
                 </section><!-- end action-bar -->
             </header>
 
             @yield('promo')
+
+            @yield('search-keyword')
 
             <hr />
 
@@ -121,10 +146,9 @@
                     <div id="my-account">
                         <h4>MY ACCOUNT</h4>
                         <ul>
-                            <li><a href="#">Sign In</a></li>
-                            <li><a href="#">Sign Up</a></li>
-                            <li><a href="#">Order History</a></li>
-                            <li><a href="#">Shopping Cart</a></li>
+                            <li><a href="/users/signin">Log in</a></li>
+                            <li><a href="/users/newaccount">Register</a></li>
+                            <li><a href="/store/cart">Shopping Cart</a></li>
                         </ul>
                     </div><!-- end my-account -->
                     <div id="info">

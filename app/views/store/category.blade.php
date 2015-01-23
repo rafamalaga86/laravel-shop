@@ -61,11 +61,18 @@
 				</h5>
 
 				<p>
-					<a href="#" class="cart-btn">
-						<span class="price">${{ $product->price }}</span>
-						 <img src="/img/white-cart.gif" alt="Add to Cart">
-						  ADD TO CART
-					</a>
+
+					{{ Form::open(['url' => '/store/addtocart']) }}
+
+					{{ Form::hidden('quantity', 1) }}
+					{{ Form::hidden('id', $product->id) }}
+
+					<button type="submit" class="cart-btn">
+						<span class="price">{{{ $product->price }}}</span>
+						<img src="/img/white-cart.gif" alt="Add to Cart">
+					</button>
+					{{ Form::close() }}
+
 				</p>
 			</div>
 

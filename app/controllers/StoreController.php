@@ -6,7 +6,7 @@ class StoreController extends BaseController {
 
 		parent::__construct();
 
-		$this->beforeFilter('csrf',['on' => 'post']);
+		$this->beforeFilter('auth', ['only' => ['postAddtocart', 'getCart', 'getRemoveitem']]);
 	}
 
 	public function getIndex(){
@@ -24,5 +24,45 @@ class StoreController extends BaseController {
 		return View::make('store/category')
 			->with('products', Product::where('category_id', '=', $cat_id)->paginate(3))
 			->with('category', Category::find($cat_id));
+	}
+
+	public function getSearch(){
+
+		$keyword = Input::get('keyword');
+
+		return View::make('store/search')
+			->with('products', Product::where('title', 'LIKE', '%' . $keyword . '%')->get())
+			->with('keyword', $keyword);
+
+	}
+
+	public function postAddtocart(){
+
+		$product = Product::find(Input::get('id'));
+		$quantity = Input::get('quantity');
+
+		Cart::insert([
+
+			'id' => $product->id,
+			'name' => $product->title,
+			'price' => $product->price,
+			'quantity' => $quantity,
+			'image' => $product->image
+		]);
+
+		return Redirect::to('store/cart');
+	}
+
+	public function getCart(){
+
+		return View::make('store/cart')->with('products', Cart::contents());
+	}
+
+	public function getRemoveitem($cart_id){
+
+		$product = Cart::item($cart_id);
+		$product->remove();
+
+		return Redirect::back();
 	}
 }

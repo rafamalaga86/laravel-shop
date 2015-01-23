@@ -1,5 +1,19 @@
 <?php
 
+
+
+
+/* Admin Filter */
+
+Route::filter('admin', function()
+{
+	if ( Auth::guest() || ! Auth::user()->admin ) return Redirect::home();
+});
+
+
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Application & Route Filters
@@ -9,7 +23,7 @@
 | which may be used to do any work before or after a request into your
 | application. Here you may also register your custom route filters.
 |
-*/
+ */
 
 App::before(function($request)
 {
@@ -41,8 +55,13 @@ Route::filter('auth', function()
 		{
 			return Response::make('Unauthorized', 401);
 		}
-		return Redirect::guest('login');
+		return Redirect::guest('users/signin');
 	}
+});
+
+Route::filter('auth-custom', function(){
+
+	if ( Auth::guest() ) return Redirect::guest('users/signin');
 });
 
 
@@ -66,6 +85,7 @@ Route::filter('guest', function()
 {
 	if (Auth::check()) return Redirect::to('/');
 });
+
 
 /*
 |--------------------------------------------------------------------------

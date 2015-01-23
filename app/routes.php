@@ -11,11 +11,30 @@
 |
 */
 
-Route::get('/', ['uses' => 'StoreController@getIndex']);
+Route::when('*', 'csrf', ['post', 'put', 'delete']);
+
+Route::get('/', ['as' => 'home', 'uses' => 'StoreController@getIndex']);
+
+Route::controller('users', 'UsersController');
 
 
-Route::controller('admin/categories', 'CategoriesController');
+// Route::group(['before' => 'auth', 'only' => ], function(){
 
-Route::controller('admin/products', 'ProductsController');
+
+
+// });
 
 Route::controller('store', 'StoreController');
+
+
+
+Route::group(['before' => 'admin'], function(){
+
+	Route::controller('admin/categories', 'CategoriesController');
+
+	Route::controller('admin/products', 'ProductsController');
+
+
+});
+
+

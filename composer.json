@@ -4,9 +4,13 @@
 	"keywords": ["framework", "laravel"],
 	"license": "MIT",
 	"type": "project",
+	"require-dev": {
+		"barryvdh/laravel-debugbar": "~1.8"
+	},
 	"require": {
 		"laravel/framework": "4.2.*",
-		"intervention/image": "~2.0"
+		"intervention/image": "~2.0",
+		"moltin/laravel-cart": "dev-master"
 	},
 	"autoload": {
 		"classmap": [
@@ -34,5 +38,5 @@
 	"config": {
 		"preferred-install": "dist"
 	},
-	"minimum-stability": "stable"
+	"minimum-stability": "dev"
 }

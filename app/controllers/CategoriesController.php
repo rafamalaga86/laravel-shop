@@ -1,15 +1,9 @@
 <?php
 
 class CategoriesController extends BaseController {
-	
-	public function __construct(){
-
-		parent::__construct();
-
-		$this->beforeFilter('crsf', ['on' => 'post']);
-	}
 
 	public function getIndex(){
+		
 		return View::make('categories/index')->with('categories', Category::all());
 	}
 

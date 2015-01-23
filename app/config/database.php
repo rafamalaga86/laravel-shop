@@ -55,7 +55,7 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'postizo_laravel_shop',
+			'database'  => 'postizo_testing_shop',
 			'username'  => 'postizo_testing',
 			'password'  => 's*$kQ!?w{4p?',
 			'charset'   => 'utf8',
